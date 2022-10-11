@@ -1,0 +1,66 @@
+#include<bits/stdc++.h>
+#define pb push_back
+#define eb emplace_back
+#define mp make_pair
+#define fi first
+#define se second
+#define all(x) (x).begin(), (x).end()
+#define debug(x) cerr << #x << " = " << x << endl;
+using namespace std;
+typedef long long ll;
+typedef pair<int, int> pii;
+void solve() {
+  int n;
+  scanf("%d", &n);
+  vector<pii> T;
+  
+  for (int i = 0; i < n; ++i) {
+    int k;
+    scanf("%d", &k);
+    
+    for (int j = 0; j < k; ++j) {
+      int x;
+      scanf("%d", &x);
+      T.eb(x, i);
+    }
+  }
+  
+  int m = (int)T.size();
+  sort(all(T));
+  vector<int> cnt(n, 0);
+  int distinct = 0;
+  int ans = (int)1e9;
+  int l = 0, r = 0;
+  // [l, r)
+  
+  while (l < m) {
+    while (r < m && distinct < n) {
+      if (cnt[T[r].se]++ == 0) {
+        ++distinct;
+      }
+      
+      r++;
+    }
+    
+    if (distinct == n) {
+      ans = min(ans, T[r - 1].fi - T[l].fi);
+    }
+    
+    if (--cnt[T[l].se] == 0) {
+      --distinct;
+    }
+    
+    l++;
+  }
+  
+  printf("%d\n", ans * 2);
+}
+int main() {
+  int tt;
+  scanf("%d", &tt);
+  
+  while (tt--) {
+    solve();
+  }
+  return 0;
+}
